@@ -1,20 +1,18 @@
 {
     "type": "project",
-    "license": "proprietary",
+    "license": "MIT",
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
-        "php": ">=8.2",
+        "php": ">=8.3",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "symfony/console": "7.1.*",
-        "symfony/dotenv": "7.1.*",
         "symfony/flex": "^2",
         "symfony/framework-bundle": "7.1.*",
         "symfony/runtime": "7.1.*",
-        "symfony/yaml": "7.1.*"
-    },
-    "require-dev": {
+        "symfony/twig-bundle": "7.1.*",
+        "twig/twig": "^3.0"
     },
     "config": {
         "allow-plugins": {
@@ -23,16 +21,6 @@
             "symfony/runtime": true
         },
         "sort-packages": true
-    },
-    "autoload": {
-        "psr-4": {
-            "App\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "App\\Tests\\": "tests/"
-        }
     },
     "replace": {
         "symfony/polyfill-ctype": "*",
@@ -46,8 +34,7 @@
     },
     "scripts": {
         "auto-scripts": {
-            "cache:clear": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+            "app.php cache:clear": "php-script"
         },
         "post-install-cmd": [
             "@auto-scripts"
