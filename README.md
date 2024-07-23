@@ -44,6 +44,11 @@ or using the [Symfony CLI](https://symfony.com/download) server:
 symfony serve
 ```
 
+> [!NOTE]
+> Since 7.2, we are further improving the default configuration for this Kernel by making the `config/` 
+> directory optional by default, as well as eliminating the requirement to configure the `framework.secret` 
+> value.
+
 ## LICENSE
 
 This software is published under the [MIT License](LICENSE).
