@@ -8,40 +8,27 @@
 
 require_once __DIR__.'/vendor/autoload_runtime.php';
 
-// ...
+use Symfony\Bundle\FrameworkBundle\Console\Application as ConsoleApplication;
+use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\Routing\Attribute\Route;
 
-class Kernel extends BaseKernel
+class SymfonyOneFileApp extends Kernel
 {
     use MicroKernelTrait;
 
     #[Route('/{name}', methods: 'GET')]
-    public function index(string $name = 'world'): Response
+    public function __invoke(string $name = 'World'): Response
     {
         return new Response("Hello $name!");
-    }
-
-    public function registerBundles(): iterable
-    {
-        yield new FrameworkBundle();
-    }
-
-    private function configureContainer(ContainerConfigurator $container, LoaderInterface $loader, ContainerBuilder $builder): void
-    {
-        $container->extension('framework', [
-            'secret' => env('APP_SECRET'),
-        ]);
-    }
-
-    private function configureRoutes(RoutingConfigurator $routes): void
-    {
-        $routes->import(self::class, 'attribute');
     }
 }
 
 return static function (array $context) {
-    $kernel = new Kernel($context['APP_ENV'], (bool) $context['APP_DEBUG']);
+    $app = new SymfonyOneFileApp($context['APP_ENV'], (bool) $context['APP_DEBUG']);
 
-    return \in_array(\PHP_SAPI, ['cli', 'phpdbg', 'embed'], true) ? new Application($kernel) : $kernel;
+    return \in_array(\PHP_SAPI, ['cli', 'phpdbg', 'embed'], true) ? new ConsoleApplication($app) : $app;
 };
 ```
 
