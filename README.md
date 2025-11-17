@@ -6,13 +6,14 @@
 ```php
 <?php
 
-require_once __DIR__.'/vendor/autoload_runtime.php';
+require_once __DIR__.'/vendor/autoload.php';
 
 use Symfony\Bundle\FrameworkBundle\Console\Application as ConsoleApplication;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Runtime\SymfonyRuntime;
 
 class SymfonyOneFileApp extends Kernel
 {
@@ -25,11 +26,11 @@ class SymfonyOneFileApp extends Kernel
     }
 }
 
-return static function (array $context) {
-    $app = new SymfonyOneFileApp($context['APP_ENV'], (bool) $context['APP_DEBUG']);
+$app = new SymfonyOneFileApp('dev', true);
 
-    return \in_array(\PHP_SAPI, ['cli', 'phpdbg', 'embed'], true) ? new ConsoleApplication($app) : $app;
-};
+new SymfonyRuntime()
+    ->getRunner(\PHP_SAPI === 'cli' ? new ConsoleApplication($app) : $app)
+    ->run();
 ```
 
 Use the same `app.php` as console and web application entry point.
@@ -43,11 +44,6 @@ or using the [Symfony CLI](https://symfony.com/download) server:
 ```bash
 symfony serve
 ```
-
-> [!NOTE]
-> Since 7.2, we are further improving the default configuration for this Kernel by making the `config/` 
-> directory optional by default, as well as eliminating the requirement to configure the `framework.secret` 
-> value.
 
 ## LICENSE
 
